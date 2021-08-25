@@ -3,7 +3,6 @@ StartGame();
 PlayGame();
 EndGame();
 
-
 static void StartGame()
 {
     Console.WriteLine("Starting the game...");
