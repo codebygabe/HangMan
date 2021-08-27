@@ -1,39 +1,40 @@
 ﻿
 namespace HangMan;
 
-class HangMan
+internal class HangMan
 {
-    static readonly string correctWord = "hangman";
-    static char[]? letters;
-    static string name = string.Empty;
-    static int guesses = 0;
+    private static readonly string correctWord = "hangman";
+    private static char[]? letters;
+    private static string name = string.Empty;
+    private static int guesses = 0;
 
-    static void Main()
+    private static void Main()
     {
         StartGame();
         PlayGame();
         EndGame();
     }
 
-    static void StartGame()
+    private static void StartGame()
     {
         letters = new char[correctWord.Length];
-        for (int i = 0; i < correctWord.Length; i++) 
+        for (int i = 0; i < correctWord.Length; i++)
             letters[i] = '-';
+
         AskForUsersName();
     }
 
-    static void AskForUsersName()
+    private static void AskForUsersName()
     {
         Console.Write("Enter your name: ");
         string input = Console.ReadLine() ?? "Player";
-        if (input.Length >= 2) 
+        if (input.Length >= 2)
             name = input;
-        else 
+        else
             AskForUsersName();
     }
 
-    static void PlayGame()
+    private static void PlayGame()
     {
         while (true)
         {
@@ -48,40 +49,38 @@ class HangMan
         Console.Clear();
     }
 
-    private static void CheckLetter(char guessedLetter)
+    private static void DisplayMaskedWord()
     {
-        for (int i = 0; i < correctWord.Length; i++)
-        {
-            if (guessedLetter == correctWord[i]) 
-                letters[i] = guessedLetter;
-        }
-    }
-
-    static void DisplayMaskedWord()
-    {
-        foreach (char c in letters) 
+        foreach (char c in letters)
             Console.Write(c);
-
         Console.WriteLine();
     }
 
-    static char AskForLetter()
+    private static char AskForLetter()
     {
         string input;
         while (true)
         {
             Console.Write("Enter a letter: ");
             input = Console.ReadLine() ?? string.Empty;
-            if (input.Length == 1) 
+            if (input.Length == 1)
                 break;
         }
-
         guesses++;
 
         return input[0];
     }
 
-    static void EndGame()
+    private static void CheckLetter(char guessedLetter)
+    {
+        for (int i = 0; i < correctWord.Length; i++)
+        {
+            if (guessedLetter == correctWord[i])
+                letters[i] = guessedLetter;
+        }
+    }
+
+    private static void EndGame()
     {
         Console.WriteLine("Game over...");
         Console.WriteLine($"Thanks for playing, {name}");
