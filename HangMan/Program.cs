@@ -9,16 +9,32 @@ internal class HangMan
     
     private static void Main()
     {
-        StartGame();
-        PlayGame();
-        EndGame();
+        try
+        {
+            StartGame();
+            PlayGame();
+            EndGame();
+        } 
+        catch (Exception)
+        {
+            // Todo: Log exception
+            Console.WriteLine("Oops, something went wrong");
+        }
     }
 
     private static void StartGame()
     {
-        string[] words = File.ReadAllLines(@"C:\Users\Gabriel\Desktop\words.txt");
+        string[] words;
+        try
+        {
+           words = File.ReadAllLines(@"C:\Users\Gabriel\Desktop\words.txt");
+        }
+        catch
+        {
+            words = new string[] { "tree", "dog", "cat" };
+        }
 
-        var rand = new Random();
+        Random rand = new();
         correctWord = words[rand.Next(0, words.Length)];
 
         letters = new char[correctWord.Length];
@@ -93,7 +109,7 @@ internal class HangMan
 
     private static void EndGame()
     {
-        Console.WriteLine("Game over...");
+        Console.WriteLine("Congrats!");
         Console.WriteLine($"Thanks for playing, {player.Name}");
         Console.WriteLine($"Guessed: {player.GuessedLetters.Count} Score: {player.Score}");
     }
