@@ -3,9 +3,9 @@ namespace HangMan;
 
 internal class HangMan
 {
-    private static readonly string correctWord = "hangman";
-    private static char[]? letters;
-    private static Player? player;
+    private static string correctWord;
+    private static char[] letters;
+    private static Player player;
     
     private static void Main()
     {
@@ -16,6 +16,11 @@ internal class HangMan
 
     private static void StartGame()
     {
+        string[] words = File.ReadAllLines(@"C:\Users\Gabriel\Desktop\words.txt");
+
+        var rand = new Random();
+        correctWord = words[rand.Next(0, words.Length)];
+
         letters = new char[correctWord.Length];
         for (int i = 0; i < correctWord.Length; i++)
             letters[i] = '-';
@@ -68,8 +73,8 @@ internal class HangMan
 
         var letter = input[0];
 
-        if (!player.GuessLetters.Contains(letter))
-            player.GuessLetters.Add(letter);
+        if (!player.GuessedLetters.Contains(letter))
+            player.GuessedLetters.Add(letter);
 
         return letter;
     }
@@ -90,6 +95,6 @@ internal class HangMan
     {
         Console.WriteLine("Game over...");
         Console.WriteLine($"Thanks for playing, {player.Name}");
-        Console.WriteLine($"Guessed: {player.GuessLetters.Count} Score: {player.Score}");
+        Console.WriteLine($"Guessed: {player.GuessedLetters.Count} Score: {player.Score}");
     }
 }
