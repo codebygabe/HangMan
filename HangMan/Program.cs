@@ -5,9 +5,8 @@ internal class HangMan
 {
     private static readonly string correctWord = "hangman";
     private static char[]? letters;
-    private static string name = string.Empty;
-    private static int guesses = 0;
-
+    private static Player? player;
+    
     private static void Main()
     {
         StartGame();
@@ -29,7 +28,7 @@ internal class HangMan
         Console.Write("Enter your name: ");
         string input = Console.ReadLine() ?? "Player";
         if (input.Length >= 2)
-            name = input;
+            player = new Player(input);
         else
             AskForUsersName();
     }
@@ -66,9 +65,13 @@ internal class HangMan
             if (input.Length == 1)
                 break;
         }
-        guesses++;
 
-        return input[0];
+        var letter = input[0];
+
+        if (!player.GuessLetters.Contains(letter))
+            player.GuessLetters.Add(letter);
+
+        return letter;
     }
 
     private static void CheckLetter(char guessedLetter)
@@ -76,14 +79,17 @@ internal class HangMan
         for (int i = 0; i < correctWord.Length; i++)
         {
             if (guessedLetter == correctWord[i])
+            {
                 letters[i] = guessedLetter;
+                player.Score++;
+            }
         }
     }
 
     private static void EndGame()
     {
         Console.WriteLine("Game over...");
-        Console.WriteLine($"Thanks for playing, {name}");
-        Console.WriteLine($"You made {guesses} guesses");
+        Console.WriteLine($"Thanks for playing, {player.Name}");
+        Console.WriteLine($"Guessed: {player.GuessLetters.Count} Score: {player.Score}");
     }
 }
